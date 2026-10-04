@@ -40,9 +40,7 @@ authController.post("/login", (req: Request, res: Response) => {
   const body: unknown = req.body;
   if (!isCredentialsDTO(body)) return res.sendStatus(400);
 
-  const email = body.email;
-  const password = body.password;
-
+  const { email, password } = body;
   const token = AuthService.login(email, password);
   if (!token) return res.sendStatus(401);
 

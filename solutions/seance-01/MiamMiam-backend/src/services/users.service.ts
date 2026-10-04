@@ -25,26 +25,16 @@ export class UsersService extends AbstractService {
    * Un utilisateur par son id, ou undefined s'il n'existe pas
    */
   static getById(id: number): User | undefined {
-    const users = this.readUsersDB();
-    for (const user of users) {
-      if (user.id === id) {
-        return user;
-      }
-    }
-    return undefined;
+    return this.readUsersDB().find((u) => u.id === id);
   }
 
   /**
    * Un utilisateur par son email (insensible à la casse), ou undefined s'il n'existe pas
    */
   static getByEmail(email: string): User | undefined {
-    const users = this.readUsersDB();
-    for (const user of users) {
-      if (user.email.toLowerCase() === email.toLowerCase()) {
-        return user;
-      }
-    }
-    return undefined;
+    return this.readUsersDB().find(
+      (u) => u.email.toLowerCase() === email.toLowerCase(),
+    );
   }
 
   /**
@@ -131,6 +121,8 @@ export class UsersService extends AbstractService {
    */
   static removeFavoriteForAll(recipeId: number): boolean {
     const users = this.readUsersDB();
+    // MODIF
+    // Il y aurait moyen de modifier cette fonction avec map() ou reduce() mais je pense que cela serait moins lisible
     for (const user of users) {
       const index = user.favorites.indexOf(recipeId);
       if (index !== -1) {
